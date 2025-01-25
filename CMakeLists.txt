@@ -5,4 +5,6 @@ set(CMAKE_C_STANDARD 11)
 
 add_executable(max_whats_not_done src/main.c
         src/controller/GameController.c
-        src/controller/GameController.h)
+        src/controller/GameController.h
+        src/view/WelcomePageView.c
+        src/view/WelcomePageView.h)
