@@ -1,19 +1,12 @@
-#include <stdio.h>
-
-void startThePage() {
-    printf("Game started...\n");
-}
-void quitThePage() {
-    printf("Bye...\n");
-}
+#include "controller/GameController.h"
 
 int main(void)
 {
-    startThePage();
+    startTheGame();
 
     // TODO: add exit condition
     if (1) {
-        quitThePage();
+        endTheGame();
     }
 
     return 0;
