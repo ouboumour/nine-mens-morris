@@ -1,13 +1,11 @@
-#include "controller/GameController.h"
+#include <stdio.h>
 
-int main(void)
-{
-    startTheGame();
+#include "controller/game/GameController.h"
 
-    // TODO: add exit condition
-    if (1) {
-        endTheGame();
-    }
+int main(void) {
+    printf("Initializing game...\n");
+
+    startTheGame();  // Initialize game state
 
     return 0;
 }

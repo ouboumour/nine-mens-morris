@@ -1,0 +1,16 @@
+#ifndef RESERVEBAR_H
+#define RESERVEBAR_H
+
+#include  "../commons/Commons.h"
+
+typedef void (*OnPiecePlacement)();
+
+typedef struct {
+    char* id;
+    Coordinates coordinates;
+    int reserve;
+} ReserveBar;
+
+void renderReserveBar(ReserveBar bar);
+
+#endif //RESERVEBAR_H
