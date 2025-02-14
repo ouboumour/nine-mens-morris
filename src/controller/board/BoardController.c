@@ -1,7 +1,7 @@
 #include "BoardController.h"
 
 #include "../../model/board/Board.h"
-#include "../../model/boardnode/BoardNode.h"
+#include "../../model/board-node/BoardNode.h"
 
 Node* nodes[MAX_NODES];
 

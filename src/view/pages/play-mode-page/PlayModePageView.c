@@ -3,6 +3,7 @@
 #include <SDL_events.h>
 #include <SDL_render.h>
 
+#include "../../../controller/game/GameController.h"
 #include "../../components/morris/action-button/ActionButton.h"
 #include "../../components/morris/app/App.h"
 #include "../../components/morris/text-button/TextButton.h"
@@ -14,10 +15,15 @@
 
 #define MAX_TEXT_BUTTONS 2
 
+void playAgainstHuman() {
+    doSetGameLevel(NONE);
+    initPlayPageView();
+}
+
 void initPlayModePageView() {
     const Wallpaper wallpaper = {"play-mode-page-wp"};
 
-    const TextButton pvpButton = {"pvp-btn", "P vs P", FLAT_BUTTON,{220, 650}, {284, 108}, initPlayPageView};
+    const TextButton pvpButton = {"pvp-btn", "P vs P", FLAT_BUTTON,{220, 650}, {284, 108}, playAgainstHuman};
     const TextButton pvmButton = {"pvm-btn", "P vs M", FLAT_BUTTON,{790, 650}, {284, 108}, initGameLevelPageView};
 
     const ActionButton homeButton = {"home-btn", {50, 50}, {77, 80}, initHomePageView};

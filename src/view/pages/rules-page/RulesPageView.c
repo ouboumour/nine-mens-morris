@@ -9,7 +9,6 @@
 #include "../../components/morris/popup/popup.h"
 #include "../../components/morris/wallpaper/Wallpaper.h"
 #include "../../components/renderer/RendererComponent.h"
-#include "../../components/window/WindowComponent.h"
 #include "../home-page/HomePageView.h"
 
 #define MAX_ACTION_BUTTONS 3

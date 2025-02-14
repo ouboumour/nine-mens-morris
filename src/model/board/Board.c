@@ -7,7 +7,7 @@
 #include <__stddef_null.h>
 
 #include "../node/Node.h"
-#include "../boardnode/BoardNode.h"
+#include "../board-node/BoardNode.h"
 #include "../game/Game.h"
 
 typedef struct {
@@ -26,7 +26,6 @@ void clearBoard() {
         clearNode(boardNodes[i]->current);
     }
 }
-
 
 void initBoard() {
     initBoardNodes();

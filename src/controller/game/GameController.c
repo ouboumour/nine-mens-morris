@@ -41,3 +41,11 @@ char* getWinnerName() {
 char* getGameName() {
     return game.name;
 }
+
+void setGameLevel(const GameLevel level) {
+    doSetGameLevel(level);
+}
+
+GameLevel getGameLevel() {
+    return game.level;
+}

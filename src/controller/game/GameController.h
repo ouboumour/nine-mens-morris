@@ -12,5 +12,6 @@ bool isGameOver();
 char* getGameName();
 
 void clearTheGame();
+GameLevel getGameLevel();
 
 #endif //GAMECONTROLLER_H

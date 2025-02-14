@@ -16,11 +16,13 @@ void chooseFirstToPlayRandomly();
 void initPlayersReserve();
 void initGamePhase();
 void initGameOverState();
+void initPlayersPlacedPieces();
 
 void clearGame() {
     clearBoard();
     chooseFirstToPlayRandomly();
     initPlayersReserve();
+    initPlayersPlacedPieces();
     initGamePhase();
     initGameOverState();
 }
@@ -63,6 +65,10 @@ void chooseFirstToPlayRandomly() {
 void initPlayersReserve() {
     game.players[0].piecesReserve = MAX_RESERVE;
     game.players[1].piecesReserve = MAX_RESERVE;
+}
+
+void doSetGameLevel(const GameLevel level) {
+    game.level = level;
 }
 
 void initPlayersPlacedPieces() {

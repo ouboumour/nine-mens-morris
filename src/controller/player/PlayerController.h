@@ -14,7 +14,6 @@ Player* getFirstPlayer();
 Player* getSecondPlayer();
 Player* getCurrentPlayer();
 
-// todo: only for test remove
-void foo();
+void performAiMove(int depth, double timout);
 
 #endif //PLAYERCONTROLLER_H

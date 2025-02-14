@@ -3,7 +3,7 @@
 
 #include <stdbool.h>
 
-#include "../boardnode/BoardNode.h"
+#include "../board-node/BoardNode.h"
 
 #define MAX_NODES 24
 
@@ -16,5 +16,8 @@ void doMarkDestinationCandidates(const Node* node);
 void clearMarkDestinationCandidates();
 bool isBoardNodeStuck(const BoardNode* boardNode);
 void clearBoard();
+
+int countPotentialMills(const Player* player);
+int countMills(const Player* player);
 
 #endif //BOARD_H

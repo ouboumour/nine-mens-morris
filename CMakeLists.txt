@@ -82,8 +82,8 @@ add_executable(nine-mens-morris src/main.c
         src/controller/player/PlayerController.h
         src/view/components/morris/player/UI_Player.c
         src/view/components/morris/player/UI_Player.h
-        src/model/boardnode/BoardNode.c
-        src/model/boardnode/BoardNode.h
+        src/model/board-node/BoardNode.c
+        src/model/board-node/BoardNode.h
         src/view/components/morris/action-button/SDLActionButton.c
         src/view/components/morris/action-button/ActionButton.h
         src/view/components/morris/popup/popup.c

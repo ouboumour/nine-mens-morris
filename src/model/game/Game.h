@@ -11,11 +11,18 @@ typedef enum {
     ATTACK
 } GamePhase;
 
+typedef enum {
+    NONE,
+    EASY,
+    MEDIUM
+} GameLevel;
+
 typedef struct {
     char* name;
     Player players[MAX_PLAYERS];
     int currentPlayerId;
     GamePhase phase;
+    GameLevel level;
     bool isOver;
 } Game;
 
@@ -24,6 +31,7 @@ Player* getGamePlayers();
 
 void markGameAsOver();
 void clearGame();
+void doSetGameLevel(GameLevel level);
 
 extern Game game;
 
