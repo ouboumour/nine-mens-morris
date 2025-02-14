@@ -10,10 +10,10 @@ void refreshReserveBarAlpha(SDL_Texture* bgTexture, const char* barId);
 
 void renderReserveBar(const ReserveBar bar) {
     char barId[50];
-    snprintf(barId, 50, "%s/%d", bar.id, bar.reserve);
+    sprintf(barId, "%s/%d", bar.id, bar.reserve);
     SDL_Texture* bgTexture = createTexture(barId);
     refreshReserveBarAlpha(bgTexture, barId);
-    const SDL_Rect bgRect = {bar.coordinates.x, bar.coordinates.y, 49, 666};
+    const SDL_Rect bgRect = {bar.coordinates.x, bar.coordinates.y, 37, 503};
     SDL_RenderCopy(getRendererInstance(), bgTexture, NULL, &bgRect);
 }
 

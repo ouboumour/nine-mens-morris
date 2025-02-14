@@ -3,8 +3,6 @@
 
 #include  "../commons/Commons.h"
 
-typedef void (*OnPiecePlacement)();
-
 typedef struct {
     char* id;
     Coordinates coordinates;

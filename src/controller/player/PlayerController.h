@@ -14,5 +14,7 @@ Player* getFirstPlayer();
 Player* getSecondPlayer();
 Player* getCurrentPlayer();
 
+// todo: only for test remove
+void foo();
 
 #endif //PLAYERCONTROLLER_H

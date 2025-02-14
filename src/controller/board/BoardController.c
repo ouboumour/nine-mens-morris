@@ -3,14 +3,12 @@
 #include "../../model/board/Board.h"
 #include "../../model/boardnode/BoardNode.h"
 
-Node* nodes[24];
+Node* nodes[MAX_NODES];
 
 void initBoardNodes();
 
 Node** getBoardNodes() {
     BoardNode** boardNodes = findAllBoardNodes();
-    for (int i = 0; i < 24; ++i) {
-        nodes[i] = boardNodes[i]->current;
-    }
+    for (int i = 0; i < MAX_NODES; ++i) nodes[i] = boardNodes[i]->current;
     return nodes;
 }

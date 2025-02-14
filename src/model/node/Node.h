@@ -13,7 +13,7 @@ typedef struct{
 
 Node* createNode(int nodeId);
 void destroyNode(Node* node);
-
+void clearNode(Node* node);
 void setAsDestCandidate(Node* node);
 
 #endif //NODE_H

@@ -2,11 +2,9 @@
 
 #include "../utils/cleaner/Cleaner.h"
 
-#define WINDOW_WIDTH  1588
-#define WINDOW_HEIGHT 957
-
 SDL_Window* window = NULL;
 
+// Design pattern Singleton
 SDL_Window* getWindowInstance() {
     if (window != NULL) return window;
 

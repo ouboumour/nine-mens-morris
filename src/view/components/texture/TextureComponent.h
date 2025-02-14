@@ -1,6 +1,7 @@
 #ifndef TEXTURECOMPONENT_H
 #define TEXTURECOMPONENT_H
 
+#include <SDL_image.h>
 #include <SDL_render.h>
 
 SDL_Texture* createTexture(char* textureName);

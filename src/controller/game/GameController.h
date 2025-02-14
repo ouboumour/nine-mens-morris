@@ -7,5 +7,10 @@ void startTheGame();
 void endTheGame();
 
 GamePhase getGamePhase();
+char* getWinnerName();
+bool isGameOver();
+char* getGameName();
+
+void clearTheGame();
 
 #endif //GAMECONTROLLER_H

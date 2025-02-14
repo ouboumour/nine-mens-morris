@@ -16,10 +16,14 @@ typedef struct {
     Player players[MAX_PLAYERS];
     int currentPlayerId;
     GamePhase phase;
+    bool isOver;
 } Game;
 
 void initGame();
 Player* getGamePlayers();
+
+void markGameAsOver();
+void clearGame();
 
 extern Game game;
 

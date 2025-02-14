@@ -3,12 +3,13 @@
 #include <SDL_events.h>
 #include <SDL_render.h>
 
-#include "../components/morris/action-button/ActionButton.h"
-#include "../components/morris/app/App.h"
-#include "../components/morris/text-button/TextButton.h"
-#include "../components/morris/popup/popup.h"
-#include "../components/morris/wallpaper/Wallpaper.h"
-#include "../components/renderer/RendererComponent.h"
+#include "../../components/morris/action-button/ActionButton.h"
+#include "../../components/morris/app/App.h"
+#include "../../components/morris/text-button/TextButton.h"
+#include "../../components/morris/popup/popup.h"
+#include "../../components/morris/wallpaper/Wallpaper.h"
+#include "../../components/renderer/RendererComponent.h"
+#include "../../components/window/WindowComponent.h"
 #include "../home-page/HomePageView.h"
 
 #define MAX_ACTION_BUTTONS 3
@@ -40,8 +41,8 @@ void backToPreviousChapter() {
 void initRulesPageView() {
     const Wallpaper wallpaper = {"rules-page-wp-wip"};
 
-    const ActionButton nextButton = {"next-btn", {1090, 630}, {77, 80}, moveToNextChapter};
-    const ActionButton backButton = {"back-btn", {436, 630}, {77, 80}, backToPreviousChapter};
+    const ActionButton nextButton = {"next-btn", {923, 580}, {77, 80}, moveToNextChapter};
+    const ActionButton backButton = {"back-btn", {300, 580}, {77, 80}, backToPreviousChapter};
 
     const ActionButton homeButton = {"home-btn", {50, 50}, {77, 80}, initHomePageView};
 
@@ -52,7 +53,7 @@ void initRulesPageView() {
     do {
         const char popupId[10];
         sprintf(popupId, "rules/%d", currentPopupPage);
-        const Popup popup = {popupId};
+        const Popup popup = {popupId, {220, 115}};
 
         SDL_RenderClear(getRendererInstance());
         renderWallpaper(wallpaper);
@@ -62,7 +63,6 @@ void initRulesPageView() {
         if (doShowBackButton) renderActionButton(backButton);
 
         renderActionButton(homeButton);
-
 
         SDL_RenderPresent(getRendererInstance());
 

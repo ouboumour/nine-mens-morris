@@ -31,3 +31,8 @@ void handleNodeMemoryAllocationFailure(const int nodeId) {
 void setAsDestCandidate(Node* node) {
     node->isADestCandidate = true;
 }
+
+void clearNode(Node* node) {
+    node->occupier = NULL;
+    node->isADestCandidate = false;
+}

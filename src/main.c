@@ -5,7 +5,8 @@
 int main(void) {
     printf("Initializing game...\n");
 
-    startTheGame();  // Initialize game state
+    startTheGame();
 
+    endTheGame();
     return 0;
 }

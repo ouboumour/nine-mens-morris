@@ -1,6 +1,5 @@
 #include "Board.h"
 
-#define MAX_NODES 24
 #define MAX_MILL 3
 #define MAX_NEIGHBORS 4
 
@@ -9,82 +8,33 @@
 
 #include "../node/Node.h"
 #include "../boardnode/BoardNode.h"
+#include "../game/Game.h"
 
 typedef struct {
     int i;
     int j;
 } Position;
 
-// void initNodes();
-// void initNodeSquares();
-// void initNodeArray();
 Position idToIdx(int nodeId);
-// Node* (*findSquareByNodeId(int id))[MAX_MILL];
 void initBoardNodes();
 BoardNode* getLeftMostNode(BoardNode* boardNode);
 
-// Node* outerSquare[MAX_MILL][MAX_MILL];
-// Node* middleSquare[MAX_MILL][MAX_MILL];
-// Node* innerSquare[MAX_MILL][MAX_MILL];
-
-// Node* nodes[MAX_NODES];
 BoardNode* boardNodes[MAX_NODES];
 
-void initBoard() {
-    // initNodes();
-    initBoardNodes();
-    // showNodes();
+void clearBoard() {
+    for (int i = 0; i < MAX_NODES; ++i) {
+        clearNode(boardNodes[i]->current);
+    }
 }
 
-// void initNodes() {
-    // initNodeSquares();
-    // initNodeArray();
-// }
 
-// void initNodeSquares() {
-//     bool doFixCavity = false;
-//     for (int i = 0; i < MAX_MILL; ++i) {
-//         for (int j = 0; j < MAX_MILL; ++j) {
-//             const int startId = i * MAX_MILL + j + 1 - doFixCavity;
-//             outerSquare[i][j] = i == 1 && j == 1 ? NULL : createNode(startId, NULL);
-//             middleSquare[i][j] = i == 1 && j == 1 ? NULL : createNode(startId + 8, NULL);
-//             innerSquare[i][j] = i == 1 && j == 1 ? NULL : createNode(startId + 16, NULL);
-//             if (i == 1 && j == 1) doFixCavity = true;
-//         }
-//     }
-// }
-//
-// void initNodeArray() {
-//     for (int i = 0; i < MAX_MILL; ++i) {
-//         for (int j = 0; j < MAX_MILL; ++j) {
-//             if (i == 1 && j == 1) continue;
-//             nodes[outerSquare[i][j]->id-1] = outerSquare[i][j];
-//             nodes[middleSquare[i][j]->id-1] = middleSquare[i][j];
-//             nodes[innerSquare[i][j]->id-1] = innerSquare[i][j];
-//         }
-//     }
-// }
+void initBoard() {
+    initBoardNodes();
+}
 
 BoardNode** getBoardNodesList() {
     return boardNodes;
 }
-//
-// Node** getNodesV1() {
-//     return nodes;
-// }
-//
-// bool belongsToMillV1(const Node* node) {
-//     if (node == NULL) return false;
-//     const Position p = idToIdx(node->id);
-//     Node* (*square)[MAX_MILL] = findSquareByNodeId(node->id);
-//     if ((p.i+p.j) %2 == 1) {
-//         if (outerSquare[p.i][p.j]->occupier == middleSquare[p.i][p.j]->occupier &&  middleSquare[p.i][p.j]->occupier == innerSquare[p.i][p.j]->occupier) return true;
-//         if (p.i==1) return square[p.i][p.j]->occupier == square[p.i-1][p.j]->occupier && square[p.i-1][p.j]->occupier == square[p.i+1][p.j]->occupier;
-//         return square[p.i][p.j]->occupier == square[p.i][p.j-1]->occupier && square[p.i][p.j-1]->occupier == square[p.i][p.j+1]->occupier;
-//     }
-//     if (p.i==0) return (square[0][0]->occupier == square[0][1]->occupier && square[0][1]->occupier == square[0][2]->occupier) || (square[p.i][p.j]->occupier == square[p.i+1][p.j]->occupier && square[p.i+1][p.j]->occupier == square[p.i+2][p.j]->occupier);
-//     return (square[2][0]->occupier == square[2][1]->occupier && square[2][1]->occupier == square[2][2]->occupier) || (square[p.i][p.j]->occupier == square[p.i-1][p.j]->occupier && square[p.i-1][p.j]->occupier == square[p.i-2][p.j]->occupier);
-// }
 
 Position idToIdx(const int nodeId) {
     int cavity = 0;
@@ -96,12 +46,6 @@ Position idToIdx(const int nodeId) {
     int j = (nodeId-1+cavity) % MAX_MILL ;
     return (Position){i, j};
 }
-
-// Node* (*findSquareByNodeId(const int id))[MAX_MILL] {
-//     if (id <= 8) return outerSquare;
-//     if (id <= 16) return middleSquare;
-//     return innerSquare;
-// }
 
 void initBoardNodes() {
     // init nodes
@@ -182,6 +126,7 @@ BoardNode* toBoardNode(const Node* node) {
 }
 
 bool belongsToMill(const Node* node) {
+    if (node == NULL || node->occupier == NULL) return false;
     BoardNode* boardNode = toBoardNode(node);
     return belongsToHorizontalMill(boardNode) || belongsToVerticalMill(boardNode);
 }
@@ -196,16 +141,36 @@ void clearMarkDestinationCandidates() {
     }
 }
 
+bool isFreeNode(const BoardNode* boardNode) {
+    return boardNode != NULL && boardNode->current->occupier == NULL;
+}
 
-void markNodeAsDestCandidate(const BoardNode* boardNode) {
-    if (boardNode == NULL) return;
-    if (boardNode->current->occupier == NULL) setAsDestCandidate(boardNode->current);
+void markAsDestCandidateIfFree(const BoardNode* boardNode) {
+    if (isFreeNode(boardNode)) setAsDestCandidate(boardNode->current);
+}
+
+void markFreeNeighborsCandidates(const BoardNode* boardNode) {
+    markAsDestCandidateIfFree(boardNode->navigator.top);
+    markAsDestCandidateIfFree(boardNode->navigator.right);
+    markAsDestCandidateIfFree(boardNode->navigator.bottom);
+    markAsDestCandidateIfFree(boardNode->navigator.left);
+}
+
+void markFreeCandidates() {
+    for (int i = 0; i < MAX_NODES; ++i) {
+        markAsDestCandidateIfFree(boardNodes[i]);
+    }
 }
 
 void doMarkDestinationCandidates(const Node* node) {
-    const BoardNode* boardNode = toBoardNode(node);
-    markNodeAsDestCandidate(boardNode->navigator.top);
-    markNodeAsDestCandidate(boardNode->navigator.right);
-    markNodeAsDestCandidate(boardNode->navigator.bottom);
-    markNodeAsDestCandidate(boardNode->navigator.left);
+    if (game.players[game.currentPlayerId-1].placedPieces == 3) markFreeCandidates();
+    else markFreeNeighborsCandidates(toBoardNode(node));
+}
+
+bool isBoardNodeStuck(const BoardNode* boardNode) {
+    if (game.players[game.currentPlayerId-1].placedPieces == 3) return false;
+    return !isFreeNode(boardNode->navigator.top) &&
+           !isFreeNode(boardNode->navigator.right) &&
+           !isFreeNode(boardNode->navigator.bottom) &&
+           !isFreeNode(boardNode->navigator.left);
 }

@@ -17,7 +17,7 @@ void renderTextButton(const TextButton button) {
     SDL_Texture* bgTexture = createTexture(buttonFullId);
     SDL_SetTextureAlphaMod(bgTexture, 130);
 
-    SDL_Surface* labelSurface = createSurface(button.id, button.label, createFont(45));
+    SDL_Surface* labelSurface = createSurface(button.id, button.label, createFont(45), ALIGN_CENTER);
     SDL_Texture* labelTexture = createTextureFromSurface(button.label, labelSurface);
 
     const SDL_Rect bgRect = {button.coordinates.x, button.coordinates.y, button.dimensions.w, button.dimensions.h};

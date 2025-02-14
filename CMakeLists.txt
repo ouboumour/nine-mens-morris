@@ -24,8 +24,8 @@ include_directories(
 add_executable(nine-mens-morris src/main.c
         src/controller/game/GameController.c
         src/controller/game/GameController.h
-        src/view/welcome-page/WelcomePageView.c
-        src/view/welcome-page/WelcomePageView.h
+        src/view/pages/welcome-page/WelcomePageView.c
+        src/view/pages/welcome-page/WelcomePageView.h
         src/view/components/sdl/SDLComponent.c
         src/view/components/sdl/SDLComponent.h
         src/view/components/window/WindowComponent.c
@@ -44,8 +44,8 @@ add_executable(nine-mens-morris src/main.c
         src/view/components/texture/TextureComponent.h
         src/view/components/surface/SurfaceComponent.c
         src/view/components/surface/SurfaceComponent.h
-        src/view/home-page/HomePageView.c
-        src/view/home-page/HomePageView.h
+        src/view/pages/home-page/HomePageView.c
+        src/view/pages/home-page/HomePageView.h
         src/view/components/morris/text-button/TextButton.h
         src/view/components/morris/text-button/SdlTextButton.c
         src/view/components/morris/commons/Commons.c
@@ -56,12 +56,12 @@ add_executable(nine-mens-morris src/main.c
         src/view/components/morris/wallpaper/Wallpaper.h
         src/view/components/morris/textarea/SdlTextArea.c
         src/view/components/morris/textarea/TextArea.h
-        src/view/rules-page/RulesPageView.c
-        src/view/rules-page/RulesPageView.h
-        src/view/play-mode-page/PlayModePageView.c
-        src/view/play-mode-page/PlayModePageView.h
-        src/view/play-page/playPageView.c
-        src/view/play-page/playPageView.h
+        src/view/pages/rules-page/RulesPageView.c
+        src/view/pages/rules-page/RulesPageView.h
+        src/view/pages/play-mode-page/PlayModePageView.c
+        src/view/pages/play-mode-page/PlayModePageView.h
+        src/view/pages/play-page/playPageView.c
+        src/view/pages/play-page/playPageView.h
         src/view/components/morris/node/UI_Node.c
         src/view/components/morris/node/UI_Node.h
         src/view/components/morris/reserve-bar/ReserveBar.c
@@ -70,8 +70,6 @@ add_executable(nine-mens-morris src/main.c
         src/view/components/morris/commons/color/Color.h
         src/model/player/Player.c
         src/model/player/Player.h
-        src/controller/node/NodeController.c
-        src/controller/node/NodeController.h
         src/model/game/Game.c
         src/model/game/Game.h
         src/model/board/Board.c
@@ -90,7 +88,11 @@ add_executable(nine-mens-morris src/main.c
         src/view/components/morris/action-button/ActionButton.h
         src/view/components/morris/popup/popup.c
         src/view/components/morris/popup/popup.h
-        src/view/components/animation/AnimationComponent.c)
+        src/view/components/animation/AnimationComponent.c
+        src/view/components/morris/celebrate-animation/celebrate-animation.c
+        src/view/components/morris/celebrate-animation/celebrate-animation.h
+        src/view/pages/game-level-page/GameLevelPage.c
+        src/view/pages/game-level-page/GameLevelPage.h)
 
 target_link_libraries(nine-mens-morris
             ${SDL2_LIBRARIES}

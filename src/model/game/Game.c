@@ -1,6 +1,8 @@
 #include "Game.h"
 
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
 #include "../board/Board.h"
@@ -12,6 +14,23 @@ Game game;
 void registerPlayers();
 void chooseFirstToPlayRandomly();
 void initPlayersReserve();
+void initGamePhase();
+void initGameOverState();
+
+void clearGame() {
+    clearBoard();
+    chooseFirstToPlayRandomly();
+    initPlayersReserve();
+    initGamePhase();
+    initGameOverState();
+}
+
+void reloadGame() {
+    chooseFirstToPlayRandomly();
+    initPlayersReserve();
+    initGamePhase();
+    initGameOverState();
+}
 
 void initGame() {
     game.name = "Nine Men's Morris";
@@ -23,11 +42,17 @@ void initGame() {
     initBoard();
     chooseFirstToPlayRandomly();
     initPlayersReserve();
+    initGameOverState();
 }
 
 void registerPlayers() {
-    game.players[0].pseudo = "ouss";
-    game.players[1].pseudo = "safaa";
+    strcpy(game.players[0].pseudo, "Safaa");
+    strcpy(game.players[1].pseudo, "Marwa");
+
+    // printf("Please type the first player pseudo:\n");
+    // fgets(game.players[0].pseudo, MAX_PSEUDO_LENGTH, stdin);
+    // printf("Please type the second player pseudo:\n");
+    // fgets(game.players[1].pseudo, MAX_PSEUDO_LENGTH, stdin);
 }
 
 void chooseFirstToPlayRandomly() {
@@ -47,4 +72,12 @@ void initPlayersPlacedPieces() {
 
 void initGamePhase() {
     game.phase = PLACEMENT;
+}
+
+void initGameOverState() {
+    game.isOver = false;
+}
+
+void markGameAsOver() {
+    game.isOver = true;
 }

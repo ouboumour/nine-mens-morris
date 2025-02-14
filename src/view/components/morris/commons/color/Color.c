@@ -16,8 +16,8 @@ RgbaColor toRgba(const Color color) {
 }
 
 Color pickColorFromComponentId(const char* componentId) {
-    if (strstr(componentId, ":blue")) return BLUE;
-    if (strstr(componentId, ":green")) return GREEN;
-    if (strstr(componentId, ":white")) return WHITE;
+    if (strstr(componentId, ":blue") != NULL) return BLUE;
+    if (strstr(componentId, ":green") != NULL) return GREEN;
+    if (strstr(componentId, ":white") != NULL) return WHITE;
     return BLACK;
 }

@@ -4,12 +4,17 @@
 
 #include "../../model/board/Board.h"
 #include "../../model/game/Game.h"
-#include "../../view/welcome-page/WelcomePageView.h"
+#include "../../view/pages/welcome-page/WelcomePageView.h"
+#include "../player/PlayerController.h"
 
 void startTheGame() {
     printf("Game started...\n");
     initGame();
     initWelcomePageView();
+}
+
+void clearTheGame() {
+    clearGame();
 }
 
 void endTheGame() {
@@ -23,4 +28,16 @@ bool isPlacementPhase() {
 
 GamePhase getGamePhase() {
     return game.phase;
+}
+
+bool isGameOver() {
+    return game.isOver;
+}
+
+char* getWinnerName() {
+    return game.players[game.currentPlayerId%2].pseudo;
+}
+
+char* getGameName() {
+    return game.name;
 }

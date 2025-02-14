@@ -58,13 +58,13 @@ SDL_Texture* trackAndReturnTexture(char* textureName, SDL_Texture* newSdlTexture
     Texture* newTexture = malloc(sizeof(Texture));
     if (newTexture == NULL) {
         handleTextureMemoryAllocationFailure(textureName);
-        exit(-1);
+        exit(EXIT_FAILURE);
     }
 
     newTexture->name = malloc(strlen(textureName) + 1);
     if (newTexture->name == NULL) {
         fprintf(stderr, "Failed to allocate memory for texture name\n");
-        exit(-1);
+        exit(EXIT_FAILURE);
     }
 
     strcpy(newTexture->name, textureName);

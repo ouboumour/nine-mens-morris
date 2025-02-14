@@ -4,7 +4,13 @@
 #include <SDL_surface.h>
 #include <SDL_ttf.h>
 
-SDL_Surface* createSurface(char* surfaceId, char* surfaceText, TTF_Font* font);
+typedef enum {
+    ALIGN_LEFT,
+    ALIGN_CENTER,
+    ALIGN_RIGHT
+} Alignement;
+
+SDL_Surface* createSurface(char* surfaceId, char* surfaceText, TTF_Font* font, Alignement alignement);
 void destroySurfaces();
 
 #endif //SURFACECOMPONENT_H

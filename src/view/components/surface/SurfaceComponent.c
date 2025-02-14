@@ -14,21 +14,30 @@ typedef struct Surface {
 
 Surface* surfacesHead = NULL;
 
-SDL_Surface* createNewSurface(char* surfaceId, char* surfaceText, TTF_Font* font);
+SDL_Surface* createNewSurface(char* surfaceId, char* surfaceText, TTF_Font* font, Alignement alignement);
 void handleSDLSurfaceInitFailure(const char* surfaceText);
 void handleSurfaceMemoryAllocationFailure(const char* surfaceText);
 SDL_Surface* findSdlSurfaceById(const char* surfaceId);
 
-SDL_Surface* createSurface(char* surfaceId, char* surfaceText, TTF_Font* font) {
+SDL_Surface* createSurface(char* surfaceId, char* surfaceText, TTF_Font* font, Alignement alignement) {
     SDL_Surface* sdlSurface = findSdlSurfaceById(surfaceId);
-    return sdlSurface != NULL ? sdlSurface : createNewSurface(surfaceId, surfaceText, font);
+    return sdlSurface != NULL ? sdlSurface : createNewSurface(surfaceId, surfaceText, font, alignement);
 }
 
-SDL_Surface* createNewSurface(char* surfaceId, char* surfaceText, TTF_Font* font) {
-    TTF_SetFontWrappedAlign(font, TTF_WRAPPED_ALIGN_CENTER);
+int toSdlAlignment(const Alignement alignement) {
+    switch (alignement) {
+        case ALIGN_CENTER: return TTF_WRAPPED_ALIGN_CENTER;
+        case ALIGN_RIGHT: return TTF_WRAPPED_ALIGN_RIGHT;
+        default: return TTF_WRAPPED_ALIGN_LEFT;
+    }
+}
+
+SDL_Surface* createNewSurface(char* surfaceId, char* surfaceText, TTF_Font* font, const Alignement alignement) {
+
+    TTF_SetFontWrappedAlign(font, toSdlAlignment(alignement));
 
     const RgbaColor textColor = toRgba(pickColorFromComponentId(surfaceId));
-    SDL_Surface* newSdlSurface = TTF_RenderText_Blended_Wrapped(font , surfaceText,(SDL_Color) {textColor.r, textColor.g, textColor.b, textColor.a}, 500);
+    SDL_Surface* newSdlSurface = TTF_RenderText_Blended_Wrapped(font , surfaceText,(SDL_Color) {textColor.r, textColor.g, textColor.b, textColor.a}, 400);
     if (newSdlSurface == NULL) {
         handleSDLSurfaceInitFailure(surfaceText);
         exit(-1);
