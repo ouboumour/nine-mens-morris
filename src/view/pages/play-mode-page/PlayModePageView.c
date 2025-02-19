@@ -13,7 +13,24 @@
 #include "../home-page/HomePageView.h"
 #include "../play-page/playPageView.h"
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
+
 #define MAX_TEXT_BUTTONS 2
+#define MAX_ACTION_BUTTONS 1
+#define MAX_WALLPAPERS 1
+
+Wallpaper wallpapers[MAX_WALLPAPERS];
+TextButton textButtons[MAX_TEXT_BUTTONS];
+ActionButton actionButtons[MAX_ACTION_BUTTONS];
+
+static SDL_Event event;
+
+static void renderUIComponents();
+static void handleEvents();
+void playModePageLoop();
+
 
 void playAgainstHuman() {
     doSetGameLevel(NONE);
@@ -21,39 +38,53 @@ void playAgainstHuman() {
 }
 
 void initPlayModePageView() {
-    const Wallpaper wallpaper = {"play-mode-page-wp"};
+    #ifdef __EMSCRIPTEN__
+        emscripten_cancel_main_loop();
+    #endif
 
-    const TextButton pvpButton = {"pvp-btn", "P vs P", FLAT_BUTTON,{220, 650}, {284, 108}, playAgainstHuman};
-    const TextButton pvmButton = {"pvm-btn", "P vs M", FLAT_BUTTON,{790, 650}, {284, 108}, initGameLevelPageView};
+    wallpapers[0] = (Wallpaper) {"play-mode-page-wp"};
 
-    const ActionButton homeButton = {"home-btn", {50, 50}, {77, 80}, initHomePageView};
+    textButtons[0] = (TextButton) {"pvp-btn", "P vs P", FLAT_BUTTON,{220, 650}, {284, 108}, playAgainstHuman};
+    textButtons[1] = (TextButton) {"pvm-btn", "P vs M", FLAT_BUTTON,{790, 650}, {284, 108}, initGameLevelPageView};
 
-    const TextButton buttons[MAX_TEXT_BUTTONS] = { pvpButton, pvmButton };
+    actionButtons[0] = (ActionButton) {"home-btn", {50, 50}, {77, 80}, initHomePageView};
 
-    SDL_Event event;
-    do {
-        SDL_RenderClear(getRendererInstance());
-
-        renderWallpaper(wallpaper);
-        renderActionButton(homeButton);
-        for (int i = 0; i < MAX_TEXT_BUTTONS; ++i) renderTextButton(buttons[i]);
-
-        SDL_RenderPresent(getRendererInstance());
-
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
-                app.shutDown();
-            } else if (event.type == SDL_MOUSEBUTTONDOWN) {
-                if (isMouseOverActionButton(homeButton)) homeButton.onClick();
-                for (int i = 0; i < MAX_TEXT_BUTTONS; ++i) {
-                    if (isMouseOverTextButton(buttons[i])) {
-                        buttons[i].onClick();
-                    }
-                }
-            }
-        }
-    } while (app.isRunning());
+    #ifdef __EMSCRIPTEN__
+        emscripten_set_main_loop(playModePageLoop, 0, 1);
+    #else
+        do playModePageLoop(); while (app.isRunning());
+    #endif
 }
 
 
 void destroyModePlayPageView();
+
+void playModePageLoop() {
+    renderUIComponents();
+    handleEvents();
+}
+
+void renderUIComponents() {
+    SDL_RenderClear(getRendererInstance());
+
+    for (int i = 0; i < MAX_WALLPAPERS; ++i) renderWallpaper(wallpapers[i]);
+    for (int i = 0; i < MAX_ACTION_BUTTONS; ++i) renderActionButton(actionButtons[i]);
+    for (int i = 0; i < MAX_TEXT_BUTTONS; ++i) renderTextButton(textButtons[i]);
+
+    SDL_RenderPresent(getRendererInstance());
+}
+
+void handleEvents() {
+    while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_QUIT) {
+            app.shutDown();
+        } else if (event.type == SDL_MOUSEBUTTONDOWN) {
+            for (int i = 0; i < MAX_ACTION_BUTTONS; ++i)
+                if (isMouseOverActionButton(actionButtons[i]))
+                    actionButtons[i].onClick();
+            for (int i = 0; i < MAX_TEXT_BUTTONS; ++i)
+                if (isMouseOverTextButton(textButtons[i]))
+                    textButtons[i].onClick();
+        }
+    }
+}

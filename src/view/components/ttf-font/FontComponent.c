@@ -1,6 +1,7 @@
 #include "FontComponent.h"
 
 #include "../utils/cleaner/Cleaner.h"
+#include "../utils/resources/Resources.h"
 
 TTF_Font* findFontBySize(int fontSize);
 TTF_Font* createNewFont(int fontSize);
@@ -31,7 +32,7 @@ void destroyFonts() {
 
 
 TTF_Font* createNewFont(const int fontSize) {
-    TTF_Font* newTtfFont = TTF_OpenFont("../src/view/assets/fonts/assassin.ttf", fontSize);
+    TTF_Font* newTtfFont = TTF_OpenFont(FONTS_PATH "assassin.ttf", fontSize);
     if (newTtfFont == NULL) {
         handleTTFFontInitFailure(fontSize);
         exit(-1);

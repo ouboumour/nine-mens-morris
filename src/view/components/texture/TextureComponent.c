@@ -4,6 +4,7 @@
 
 #include "../renderer/RendererComponent.h"
 #include "../utils/cleaner/Cleaner.h"
+#include "../utils/resources/Resources.h"
 
 typedef struct Texture {
     char* name;
@@ -79,7 +80,7 @@ SDL_Texture* trackAndReturnTexture(char* textureName, SDL_Texture* newSdlTexture
 
 SDL_Texture* createNewTexture(char* textureName) {
     char filePath[70];
-    sprintf(filePath, "../src/view/assets/images/%s.png", textureName);
+    sprintf(filePath, IMAGES_PATH "%s.png", textureName);
     return trackAndReturnTexture(textureName, IMG_LoadTexture(getRendererInstance(), filePath));
 }
 

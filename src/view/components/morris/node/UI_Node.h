@@ -3,7 +3,7 @@
 
 #include <stdbool.h>
 
-#include "../commons/Commons.h"
+#include "../../utils/commons/Commons.h"
 #include "../../../../controller/board/BoardController.h"
 
 typedef struct {

@@ -8,7 +8,7 @@ SDL_Window* window = NULL;
 SDL_Window* getWindowInstance() {
     if (window != NULL) return window;
 
-    window = SDL_CreateWindow("Nine Men's Morris", 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
+    window = SDL_CreateWindow("Nine Men's Morris", 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
     if (window == NULL) {
         fprintf(stderr, "Failed to create window: %s\n", SDL_GetError());
         destroyAll();

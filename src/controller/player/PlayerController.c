@@ -1,7 +1,7 @@
 #include "PlayerController.h"
 
 #include <stdio.h>
-#include <arm/limits.h>
+#include <limits.h>
 
 #include "../../model/board/Board.h"
 #include "../../model/game/Game.h"

@@ -1,7 +1,7 @@
 #ifndef TEXTAREA_H
 #define TEXTAREA_H
 
-#include "../commons/Commons.h"
+#include "../../utils/commons/Commons.h"
 #include "../../surface/SurfaceComponent.h"
 
 typedef struct {

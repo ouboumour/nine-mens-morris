@@ -1,5 +1,9 @@
 #include <SDL_ttf.h>
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
+
 #include "WelcomePageView.h"
 
 #include "../../../controller/game/GameController.h"
@@ -16,36 +20,36 @@
 
 // TODO: rename the file name to make it clear it's an sdl gui implementation
 
+#define MAX_WALLPAPERS 1
+#define MAX_TEXT_AREAS 1
+#define MAX_TEXT_BUTTONS 1
+
+static Wallpaper wallpapers[MAX_WALLPAPERS];
+static TextArea textAreas[MAX_TEXT_AREAS];
+static TextButton textButtons[MAX_TEXT_BUTTONS];
+
+static SDL_Event event;
+
+void renderWelcomePageUIComponents();
+static void handleEvents();
+void welcomePageLoop();
+
 void initWelcomePageView() {
     initSDL();
     initSDLImage();
     initSDLTTF();
 
-    const Wallpaper wallpaper = {"welcome-page-wp"};
-    const TextArea gameNameTextArea = {"game-name-ta", getGameName(), {10, 55}, ALIGN_CENTER};
-    const TextButton startButton = {"start-btn", "Start", DIRECTED_BUTTON,{32, 630}, {284, 108}, initHomePageView};
+    wallpapers[0] = (Wallpaper){"welcome-page-wp"};
+    textAreas[0] = (TextArea){"game-name-ta", getGameName(), {10, 55}, ALIGN_CENTER};
+    textButtons[0] = (TextButton){"start-btn", "Start", DIRECTED_BUTTON,(Coordinates){32, 630}, (Dimensions){284, 108}, initHomePageView};
 
-    SDL_Event event;
-
-    do {
-        SDL_RenderClear(getRendererInstance());
-
-        renderWallpaper(wallpaper);
-        renderTextArea(gameNameTextArea);
-        renderTextButton(startButton);
-
-        SDL_RenderPresent(getRendererInstance());
-
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
-                app.shutDown();
-            } else if (event.type == SDL_MOUSEBUTTONDOWN) {
-                if (isMouseOverTextButton(startButton)) {
-                    startButton.onClick();
-                }
-            }
-        }
-    } while (app.isRunning());
+    #ifdef __EMSCRIPTEN__
+        emscripten_set_main_loop(welcomePageLoop, 0, 1);
+    #else
+        do {
+            welcomePageLoop();
+        } while (app.isRunning());
+    #endif
 
     destroyAll();
 }
@@ -56,4 +60,32 @@ void clearWelcomePageView() {
 
 void destroyWelcomePageView() {
     printf("destroyWelcomePageView...\n");
+}
+
+void welcomePageLoop() {
+    renderWelcomePageUIComponents();
+    handleEvents();
+}
+
+void renderWelcomePageUIComponents() {
+    SDL_RenderClear(getRendererInstance());
+
+    for (int i = 0; i < MAX_WALLPAPERS; ++i) renderWallpaper(wallpapers[i]);
+    for (int i = 0; i < MAX_TEXT_AREAS; ++i) renderTextArea(textAreas[i]);
+    for (int i = 0; i < MAX_TEXT_BUTTONS; ++i) renderTextButton(textButtons[i]);
+
+    SDL_RenderPresent(getRendererInstance());
+}
+
+void handleEvents() {
+    while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_QUIT) {
+            app.shutDown();
+        } else if (event.type == SDL_MOUSEBUTTONDOWN) {
+            for (int i = 0; i < MAX_TEXT_BUTTONS; ++i)
+                if (isMouseOverTextButton(textButtons[i])) {
+                    textButtons[i].onClick();
+                }
+        }
+    }
 }

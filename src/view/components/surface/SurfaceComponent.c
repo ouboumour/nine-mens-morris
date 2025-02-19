@@ -2,7 +2,8 @@
 
 #include <SDL_ttf.h>
 
-#include "../morris/commons/color/Color.h"
+#include  "../utils/color/Color.h"
+
 #include "../utils/cleaner/Cleaner.h"
 
 typedef struct Surface {

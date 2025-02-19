@@ -2,6 +2,7 @@
 
 #include "../texture/TextureComponent.h"
 #include "../utils/cleaner/Cleaner.h"
+#include "../utils/resources/Resources.h"
 
 typedef struct Animation {
     char* id;
@@ -43,7 +44,7 @@ Animation* findAnimationById(char* id) {
 
 IMG_Animation* createNewAnimation(char* id) {
     char gifPath[100];
-    sprintf(gifPath, "../src/view/assets/images/%s.gif", id);
+    sprintf(gifPath, IMAGES_PATH "%s.gif", id);
     IMG_Animation* newSdlAnimation = IMG_LoadAnimation(gifPath);
 
     if (newSdlAnimation == NULL) {

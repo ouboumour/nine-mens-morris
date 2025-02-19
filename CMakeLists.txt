@@ -1,27 +1,58 @@
 cmake_minimum_required(VERSION 3.28)
 project(nine-mens-morris C)
 
-set(CMAKE_C_STANDARD 11)
+# Detect Emscripten build
+if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
+    set(CMAKE_C_COMPILER emcc)
+    set(CMAKE_CXX_COMPILER em++)
 
-# Manually set paths for SDL2
-set(SDL2_INCLUDE_DIRS /opt/homebrew/include/SDL2)  # Adjust this path if needed
-set(SDL2_LIBRARIES /opt/homebrew/lib/libSDL2.dylib)  # Adjust this path if needed
+    set(CMAKE_TOOLCHAIN_FILE "/Users/ouss/CLionProjects/nine-mens-morris/cmake-build-debug/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake")
 
-# Manually set paths for SDL2_image
-set(SDL2_IMAGE_INCLUDE_DIRS /opt/homebrew/include/SDL2)  # Adjust this path if needed
-set(SDL2_IMAGE_LIBRARIES /opt/homebrew/lib/libSDL2_image.dylib)  # Adjust this path if needed
+    # Emscripten-specific compiler flags
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s USE_SDL_TTF=2 -s USE_LIBPNG=1")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s USE_SDL_TTF=2 -s USE_LIBPNG=1")
 
-# Manually set paths for SDL2_ttf
-set(SDL2_TTF_INCLUDE_DIRS /opt/homebrew/include/SDL2)  # Adjust this path if needed
-set(SDL2_TTF_LIBRARIES /opt/homebrew/lib/libSDL2_ttf.dylib)  # Adjust this path if needed
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='[\"png\"]'")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='[\"png\"]'")
 
-# Include directories
-include_directories(
-        ${SDL2_INCLUDE_DIRS}
-        ${SDL2_TTF_INCLUDE_DIRS}
-)
 
-add_executable(nine-mens-morris src/main.c
+    set(CMAKE_EXECUTABLE_SUFFIX ".html")  # Ensure output is an HTML file
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -o nine-mens-morris.html")
+
+
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --preload-file ${CMAKE_SOURCE_DIR}/src/view/assets@/assets")
+
+#    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s INITIAL_MEMORY=256MB -s ALLOW_MEMORY_GROWTH=1 -s MAX_WEBGL_VERSION=1")
+
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s INITIAL_MEMORY=1024MB -s ALLOW_MEMORY_GROWTH=1 -s MAX_WEBGL_VERSION=2 -s USE_WEBGL2=1 -s MIN_WEBGL_VERSION=1 -s OFFSCREEN_FRAMEBUFFER=1")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s MAX_WEBGL_VERSION=2 -s MIN_WEBGL_VERSION=1 -s OFFSCREEN_FRAMEBUFFER=1 -s USE_PTHREADS=0")
+
+    # Include SDL2 headers for Emscripten
+    include_directories(
+            /Users/ouss/CLionProjects/nine-mens-morris/emsdk/upstream/emscripten/cache/sysroot/include/SDL2
+    )
+
+    set(OUTPUT_FILE "nine-mens-morris")  # WebAssembly output
+
+else()
+    set(SDL2_INCLUDE_DIRS /opt/homebrew/include/SDL2)  # Adjust this path if needed
+    set(SDL2_LIBRARIES /opt/homebrew/lib/libSDL2.dylib)  # Adjust this path if needed
+
+    # Manually set paths for SDL2_image
+    set(SDL2_IMAGE_INCLUDE_DIRS /opt/homebrew/include/SDL2)  # Adjust this path if needed
+    set(SDL2_IMAGE_LIBRARIES /opt/homebrew/lib/libSDL2_image.dylib)  # Adjust this path if needed
+
+    # Manually set paths for SDL2_ttf
+    set(SDL2_TTF_INCLUDE_DIRS /opt/homebrew/include/SDL2)  # Adjust this path if needed
+    set(SDL2_TTF_LIBRARIES /opt/homebrew/lib/libSDL2_ttf.dylib)  # Adjust this path if needed
+
+    include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS} ${SDL2_TTF_INCLUDE_DIRS})
+    set(OUTPUT_FILE "nine-mens-morris")  # Standard executable
+
+endif()
+
+# Add executable
+add_executable(${OUTPUT_FILE} src/main.c
         src/controller/game/GameController.c
         src/controller/game/GameController.h
         src/view/pages/welcome-page/WelcomePageView.c
@@ -48,8 +79,8 @@ add_executable(nine-mens-morris src/main.c
         src/view/pages/home-page/HomePageView.h
         src/view/components/morris/text-button/TextButton.h
         src/view/components/morris/text-button/SdlTextButton.c
-        src/view/components/morris/commons/Commons.c
-        src/view/components/morris/commons/Commons.h
+        src/view/components/utils/commons/Commons.c
+        src/view/components/utils/commons/Commons.h
         src/view/components/morris/app/App.c
         src/view/components/morris/app/App.h
         src/view/components/morris/wallpaper/SdlWallpaper.c
@@ -66,8 +97,8 @@ add_executable(nine-mens-morris src/main.c
         src/view/components/morris/node/UI_Node.h
         src/view/components/morris/reserve-bar/ReserveBar.c
         src/view/components/morris/reserve-bar/ReserveBar.h
-        src/view/components/morris/commons/color/Color.c
-        src/view/components/morris/commons/color/Color.h
+        src/view/components/utils/color/Color.c
+        src/view/components/utils/color/Color.h
         src/model/player/Player.c
         src/model/player/Player.h
         src/model/game/Game.c
@@ -92,9 +123,10 @@ add_executable(nine-mens-morris src/main.c
         src/view/components/morris/celebrate-animation/celebrate-animation.c
         src/view/components/morris/celebrate-animation/celebrate-animation.h
         src/view/pages/game-level-page/GameLevelPage.c
-        src/view/pages/game-level-page/GameLevelPage.h)
+        src/view/pages/game-level-page/GameLevelPage.h
+        src/view/components/utils/resources/Resources.h)
 
-target_link_libraries(nine-mens-morris
-            ${SDL2_LIBRARIES}
-            ${SDL2_IMAGE_LIBRARIES}
-            ${SDL2_TTF_LIBRARIES} )
+# Link SDL libraries for native mode
+if(NOT CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
+    target_link_libraries(${OUTPUT_FILE} ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES} ${SDL2_TTF_LIBRARIES})
+endif()
