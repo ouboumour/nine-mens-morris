@@ -35,18 +35,27 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
     set(OUTPUT_FILE "nine-mens-morris")  # WebAssembly output
 
 else()
-    set(SDL2_INCLUDE_DIRS /opt/homebrew/include/SDL2)  # Adjust this path if needed
-    set(SDL2_LIBRARIES /opt/homebrew/lib/libSDL2.dylib)  # Adjust this path if needed
 
-    # Manually set paths for SDL2_image
-    set(SDL2_IMAGE_INCLUDE_DIRS /opt/homebrew/include/SDL2)  # Adjust this path if needed
-    set(SDL2_IMAGE_LIBRARIES /opt/homebrew/lib/libSDL2_image.dylib)  # Adjust this path if needed
-
-    # Manually set paths for SDL2_ttf
-    set(SDL2_TTF_INCLUDE_DIRS /opt/homebrew/include/SDL2)  # Adjust this path if needed
-    set(SDL2_TTF_LIBRARIES /opt/homebrew/lib/libSDL2_ttf.dylib)  # Adjust this path if needed
+    find_package(SDL2 REQUIRED)
+    find_package(SDL2_image REQUIRED)
+    find_package(SDL2_ttf REQUIRED)
 
     include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS} ${SDL2_TTF_INCLUDE_DIRS})
+
+#    target_link_libraries(${OUTPUT_FILE} SDL2 SDL2_image SDL2_ttf)
+
+    #    set(SDL2_INCLUDE_DIRS /opt/homebrew/include/SDL2)  # Adjust this path if needed
+#    set(SDL2_LIBRARIES /opt/homebrew/lib/libSDL2.dylib)  # Adjust this path if needed
+#
+#    # Manually set paths for SDL2_image
+#    set(SDL2_IMAGE_INCLUDE_DIRS /opt/homebrew/include/SDL2)  # Adjust this path if needed
+#    set(SDL2_IMAGE_LIBRARIES /opt/homebrew/lib/libSDL2_image.dylib)  # Adjust this path if needed
+#
+#    # Manually set paths for SDL2_ttf
+#    set(SDL2_TTF_INCLUDE_DIRS /opt/homebrew/include/SDL2)  # Adjust this path if needed
+#    set(SDL2_TTF_LIBRARIES /opt/homebrew/lib/libSDL2_ttf.dylib)  # Adjust this path if needed
+
+#    include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS} ${SDL2_TTF_INCLUDE_DIRS})
     set(OUTPUT_FILE "nine-mens-morris")  # Standard executable
 
 endif()
