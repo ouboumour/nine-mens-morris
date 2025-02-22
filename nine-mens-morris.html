@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en-us">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Nine Men's Morris</title>
+  </head>
+
+  <body>
+
+    <canvas id="canvas" oncontextmenu="event.preventDefault()" tabindex=-1></canvas>
+
+    <script type='text/javascript'>
+      var Module = {
+        canvas: (() => {
+          let canvas = document.getElementById('canvas');
+          canvas.addEventListener("webglcontextlost", (e) => { alert('WebGL context lost. You will need to reload the page.'); e.preventDefault(); }, false);
+
+          return canvas;
+        })()
+      };
+    </script>
+
+    <script type="text/javascript" src="nine-mens-morris.js"></script>
+
+
+  </body>
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      /*background-color: #3e362e;*/
+      background: url('./foo.jpg') no-repeat center center fixed;
+      background-size: cover; /* Ensures the image covers the full viewport */
+      background-attachment: fixed; /* Keeps the background fixed when scrolling */
+    }
+
+    canvas {
+      display: block;
+      border-radius: 25px;
+      opacity: 0.8;
+      border: 10px solid black;
+    }
+  </style>
+
+</html>
