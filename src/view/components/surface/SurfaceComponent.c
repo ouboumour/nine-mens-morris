@@ -72,7 +72,7 @@ void destroySurfaces() {
 SDL_Surface* findSdlSurfaceById(const char* surfaceId) {
     const Surface* currentSurface = surfacesHead;
     while (currentSurface != NULL) {
-        if (strcmp(currentSurface->text, surfaceId) == 0) {
+        if (strcmp(currentSurface->id, surfaceId) == 0) {
             return currentSurface->sdlSurface;
         }
         currentSurface = currentSurface->next;

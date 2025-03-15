@@ -73,7 +73,7 @@ void initRulesPageView() {
 void destroyRulesPageView();
 
 static void renderUIComponents() {
-    const char popupId[10];
+    char popupId[10];
     sprintf(popupId, "rules/%d", currentPopupPage);
     const Popup popup = {popupId, {220, 115}};
 

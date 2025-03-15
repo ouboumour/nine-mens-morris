@@ -9,24 +9,17 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
     set(CMAKE_TOOLCHAIN_FILE "/Users/ouss/CLionProjects/nine-mens-morris/cmake-build-debug/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake")
 
     # Emscripten-specific compiler flags
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s USE_SDL_TTF=2 -s USE_LIBPNG=1")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s USE_SDL_TTF=2 -s USE_LIBPNG=1")
-
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='[\"png\"]'")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='[\"png\"]'")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s USE_SDL_TTF=2 -s USE_LIBPNG=1 -s SDL2_IMAGE_FORMATS='[\"png\",\"gif\"]'")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s USE_SDL_TTF=2 -s USE_LIBPNG=1 -s SDL2_IMAGE_FORMATS='[\"png\",\"gif\"]'")
 
 
     set(CMAKE_EXECUTABLE_SUFFIX ".html")  # Ensure output is an HTML file
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -o nine-mens-morris.html")
 
-
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --preload-file ${CMAKE_SOURCE_DIR}/src/view/assets@/assets")
 
-#    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s INITIAL_MEMORY=256MB -s ALLOW_MEMORY_GROWTH=1 -s MAX_WEBGL_VERSION=1")
-
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s INITIAL_MEMORY=1024MB -s ALLOW_MEMORY_GROWTH=1 -s MAX_WEBGL_VERSION=2 -s USE_WEBGL2=1 -s MIN_WEBGL_VERSION=1 -s OFFSCREEN_FRAMEBUFFER=1")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s INITIAL_MEMORY=64MB -s ALLOW_MEMORY_GROWTH=1 -s MAX_WEBGL_VERSION=2 -s MIN_WEBGL_VERSION=1 -s OFFSCREEN_FRAMEBUFFER=1")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s MAX_WEBGL_VERSION=2 -s MIN_WEBGL_VERSION=1 -s OFFSCREEN_FRAMEBUFFER=1 -s USE_PTHREADS=0")
-
     # Include SDL2 headers for Emscripten
     include_directories(
             /Users/ouss/CLionProjects/nine-mens-morris/emsdk/upstream/emscripten/cache/sysroot/include/SDL2
@@ -44,7 +37,7 @@ else()
 
 #    target_link_libraries(${OUTPUT_FILE} SDL2 SDL2_image SDL2_ttf)
 
-    #    set(SDL2_INCLUDE_DIRS /opt/homebrew/include/SDL2)  # Adjust this path if needed
+#    set(SDL2_INCLUDE_DIRS /opt/homebrew/include/SDL2)  # Adjust this path if needed
 #    set(SDL2_LIBRARIES /opt/homebrew/lib/libSDL2.dylib)  # Adjust this path if needed
 #
 #    # Manually set paths for SDL2_image

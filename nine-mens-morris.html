@@ -1,32 +1,10 @@
 <!doctype html>
 <html lang="en-us">
 
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Nine Men's Morris</title>
-  </head>
-
-  <body>
-
-    <canvas id="canvas" oncontextmenu="event.preventDefault()" tabindex=-1></canvas>
-
-    <script type='text/javascript'>
-      var Module = {
-        canvas: (() => {
-          let canvas = document.getElementById('canvas');
-          canvas.addEventListener("webglcontextlost", (e) => { alert('WebGL context lost. You will need to reload the page.'); e.preventDefault(); }, false);
-
-          return canvas;
-        })()
-      };
-    </script>
-
-    <script type="text/javascript" src="nine-mens-morris.js"></script>
-
-
-  </body>
-
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Nine Men's Morris</title>
   <style>
     html, body {
       height: 100%;
@@ -34,18 +12,56 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      /*background-color: #3e362e;*/
       background: url('./foo.jpg') no-repeat center center fixed;
-      background-size: cover; /* Ensures the image covers the full viewport */
-      background-attachment: fixed; /* Keeps the background fixed when scrolling */
+      background-size: cover;
+      background-attachment: fixed;
     }
 
     canvas {
       display: block;
       border-radius: 25px;
       opacity: 0.8;
-      border: 10px solid black;
+      /* Remove the border from here */
     }
   </style>
+</head>
 
+<body>
+<canvas id="canvas" oncontextmenu="event.preventDefault()" tabindex=-1></canvas>
+
+<script type='text/javascript'>
+  var Module = {
+    canvas: (() => {
+      let canvas = document.getElementById('canvas');
+      if (!canvas) {
+        console.error('Canvas element not found!');
+        return;
+      }
+
+      canvas.addEventListener("webglcontextlost", (e) => {
+        alert('WebGL context lost. You will need to reload the page.');
+        e.preventDefault();
+      }, false);
+
+      // Function to apply the border after the canvas is ready
+      function applyBorderWhenReady() {
+        if (canvas.width > 0 && canvas.height > 0) {
+          // Canvas is ready, apply the border
+          canvas.style.border = '10px solid black';
+        } else {
+          // Canvas is not ready yet, check again on the next frame
+          requestAnimationFrame(applyBorderWhenReady);
+        }
+      }
+
+      // Start checking for canvas readiness
+      applyBorderWhenReady();
+
+      return canvas;
+    })()
+  };
+</script>
+
+<script type="text/javascript" src="nine-mens-morris.js"></script>
+</body>
 </html>

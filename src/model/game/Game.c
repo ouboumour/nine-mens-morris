@@ -48,8 +48,8 @@ void initGame() {
 }
 
 void registerPlayers() {
-    strcpy(game.players[0].pseudo, "Safaa");
-    strcpy(game.players[1].pseudo, "Marwa");
+    strcpy(game.players[0].pseudo, "Player I");
+    strcpy(game.players[1].pseudo, "Player II");
 
     // printf("Please type the first player pseudo:\n");
     // fgets(game.players[0].pseudo, MAX_PSEUDO_LENGTH, stdin);

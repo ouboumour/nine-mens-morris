@@ -12,7 +12,23 @@
 #include "../home-page/HomePageView.h"
 #include "../play-page/playPageView.h"
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
+
 #define MAX_TEXT_BUTTONS 2
+#define MAX_ACTION_BUTTONS 1
+#define MAX_WALLPAPERS 1
+
+static Wallpaper wallpapers[MAX_WALLPAPERS];
+static TextButton textButtons[MAX_TEXT_BUTTONS];
+static ActionButton actionButtons[MAX_ACTION_BUTTONS];
+
+static SDL_Event event;
+
+static void renderUIComponents();
+static void handleEvents();
+void gameLevelLoop();
 
 void playAgainstEasyAI() {
     doSetGameLevel(EASY);
@@ -25,41 +41,54 @@ void playMediumEasyAI() {
 }
 
 void initGameLevelPageView() {
+    #ifdef __EMSCRIPTEN__
+        emscripten_cancel_main_loop();
+    #endif
 
-    const Wallpaper wallpaper = {"game-level-page-wp"};
-    const ActionButton homeButton = {"home-btn", {50, 50}, {77, 80}, initHomePageView};
-    const TextButton easyLevelButton = {"easy-level-btn", "Easy", FLAT_BUTTON,{970, 80}, {284, 108}, playAgainstEasyAI};
-    const TextButton middLevelButton = {"mid-level-btn", "Medium", FLAT_BUTTON,{970, 592}, {284, 108}, playMediumEasyAI};
+    wallpapers[0] = (Wallpaper) {"game-level-page-wp"};
 
-    const TextButton buttons[MAX_TEXT_BUTTONS] = {easyLevelButton, middLevelButton};
+    actionButtons[0] = (ActionButton) {"home-btn", {50, 50}, {77, 80}, initHomePageView};
 
-    SDL_Event event;
-    do {
-        SDL_RenderClear(getRendererInstance());
-        renderWallpaper(wallpaper);
-        renderActionButton(homeButton);
+    textButtons[0] = (TextButton) {"easy-level-btn", "Easy", FLAT_BUTTON,{970, 80}, {284, 108}, playAgainstEasyAI};
+    textButtons[1] = (TextButton) {"mid-level-btn", "Medium", FLAT_BUTTON,{970, 592}, {284, 108}, playMediumEasyAI};
 
-        for (int i = 0; i < MAX_TEXT_BUTTONS; ++i) renderTextButton(buttons[i]);
-
-        SDL_RenderPresent(getRendererInstance());
-
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
-                app.shutDown();
-            } else if (event.type == SDL_MOUSEBUTTONDOWN) {
-                for (int i = 0; i < MAX_TEXT_BUTTONS; ++i) {
-                    if (isMouseOverTextButton(buttons[i])) {
-                        buttons[i].onClick();
-                    } else if (isMouseOverActionButton(homeButton)) {
-                        homeButton.onClick();
-                    }
-                }
-            }
-        }
-    } while (app.isRunning());
-
+    #ifdef __EMSCRIPTEN__
+        emscripten_set_main_loop(gameLevelLoop, 0, 1);
+    #else
+        do gameLevelLoop(); while (app.isRunning());
+    #endif
 }
 
 void destroyGameLevelPageView() {
     printf("destroyGameLevelPageView...");
+}
+
+void gameLevelLoop() {
+    renderUIComponents();
+    handleEvents();
+}
+
+void renderUIComponents() {
+    SDL_RenderClear(getRendererInstance());
+
+    for (int i = 0; i < MAX_WALLPAPERS; ++i) renderWallpaper(wallpapers[i]);
+    for (int i = 0; i < MAX_ACTION_BUTTONS; ++i) renderActionButton(actionButtons[i]);
+    for (int i = 0; i < MAX_TEXT_BUTTONS; ++i) renderTextButton(textButtons[i]);
+
+    SDL_RenderPresent(getRendererInstance());
+}
+
+void handleEvents() {
+    while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_QUIT) {
+            app.shutDown();
+        } else if (event.type == SDL_MOUSEBUTTONDOWN) {
+            for (int i = 0; i < MAX_TEXT_BUTTONS; ++i)
+                if (isMouseOverTextButton(textButtons[i]))
+                    textButtons[i].onClick();
+            for (int i = 0; i < MAX_ACTION_BUTTONS; ++i)
+                if (isMouseOverActionButton(actionButtons[i]))
+                    actionButtons[i].onClick();
+        }
+    }
 }

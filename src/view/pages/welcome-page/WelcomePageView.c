@@ -54,10 +54,6 @@ void initWelcomePageView() {
     destroyAll();
 }
 
-void clearWelcomePageView() {
-    printf("destroyWelcomePageView...\n");
-}
-
 void destroyWelcomePageView() {
     printf("destroyWelcomePageView...\n");
 }
@@ -83,9 +79,8 @@ void handleEvents() {
             app.shutDown();
         } else if (event.type == SDL_MOUSEBUTTONDOWN) {
             for (int i = 0; i < MAX_TEXT_BUTTONS; ++i)
-                if (isMouseOverTextButton(textButtons[i])) {
+                if (isMouseOverTextButton(textButtons[i]))
                     textButtons[i].onClick();
-                }
         }
     }
 }

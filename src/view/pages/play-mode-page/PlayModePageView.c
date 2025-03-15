@@ -21,9 +21,9 @@
 #define MAX_ACTION_BUTTONS 1
 #define MAX_WALLPAPERS 1
 
-Wallpaper wallpapers[MAX_WALLPAPERS];
-TextButton textButtons[MAX_TEXT_BUTTONS];
-ActionButton actionButtons[MAX_ACTION_BUTTONS];
+static Wallpaper wallpapers[MAX_WALLPAPERS];
+static TextButton textButtons[MAX_TEXT_BUTTONS];
+static ActionButton actionButtons[MAX_ACTION_BUTTONS];
 
 static SDL_Event event;
 
