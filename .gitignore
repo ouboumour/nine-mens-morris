@@ -317,3 +317,5 @@ fabric.properties
 
 build-native/
 build-wasm/
+
+.DS_Store
